@@ -1,0 +1,50 @@
+#server:
+#  port: 0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: ms-product
+          uri: lb://ms-product
+          predicates:
+            - Path=/api/products
+        - id: ms-order
+          uri: lb://ms-order
+          predicates:
+            - Path=/api/orders
+        - id: ms-inventory
+          uri: lb://ms-inventory
+          predicates:
+            - Path=/api/inventory
+        - id: discovery-server
+          uri: http://localhost:8761
+          predicates:
+            - Path=/eureka/web
+          filters:
+            - SetPath=/
+        - id: discovery-server-static
+          uri: http://localhost:8761
+          predicates:
+            - Path=/eureka/**
+  application:
+    name: ms-gateway
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        cloud:
+          gateway:
+            route:
+              org:
+                springframework:
+                  cloud:
+                    gateway:
+                      route:
+                        RouteDefinitionLocator: INFO
+            nodeValue: TRACE
