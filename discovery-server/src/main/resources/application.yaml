@@ -1,3 +1,6 @@
+server:
+  port: 8761
+
 eureka:
   username: ${EUREKA_USERNAME:eureka}
   password: ${EUREKA_PASSWORD:password}
@@ -9,5 +12,9 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-server:
-  port: 8761
+spring:
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1.0
